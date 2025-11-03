@@ -1,0 +1,31 @@
+# MCP7940N driver
+
+## Section
+
+```elixir
+defmodule MCP7940 do
+  @addr 0x6F
+
+  @spec get!(Circuits.I2C.bus()) :: NaiveDateTime.t()
+  def get!(i2c) do
+    # TODO
+  end
+
+  @spec set!(Circuits.I2C.bus(), NaiveDateTime.t()) :: :ok
+  def set!(i2c, t) do
+    # TODO
+  end
+end
+```
+
+```elixir
+{:ok, i2c} = Circuits.I2C.open("i2c-1")
+```
+
+```elixir
+MCP7940.get!(i2c)
+```
+
+```elixir
+MCP7940.set!(i2c, ~N[2025-12-31 23:59:00])
+```

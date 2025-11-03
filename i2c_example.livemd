@@ -1,0 +1,86 @@
+# I2C example
+
+## Set up I2C - list busses
+
+A single device can have multiple I2C devices. Even though the Raspberry Pi here only exposes one of them, there are other chips which can have 2, 3, 4 or even more!
+
+```elixir
+Circuits.I2C.bus_names()
+```
+
+```elixir
+{:ok, i2c} = Circuits.I2C.open("i2c-1")
+```
+
+## Discover devices
+
+Sometimes you don't know what devices are already attached to your I2C network. Or, you don't know the address of the device you just plugged in. This is a handy debugging tool for finding out!
+
+Here, `0x6F` is the address of our MCP7940N Real Time Clock chip
+
+```elixir
+Circuits.I2C.detect_devices()
+```
+
+## Write a register
+
+An arbitrary example - we're writing random data to our random register. Be sure to look at your device's datasheet to know what data you need to write, and where!
+
+```elixir
+device_address = 0x6F
+register_address = 0x00
+
+Circuits.I2C.write(i2c, device_address, <<register_address, 0x01, 0x02>>)
+```
+
+## Read a register
+
+```elixir
+:ok = Circuits.I2C.write(i2c, device_address, <<register_address>>)
+Circuits.I2C.read(i2c, device_address, 2) # 2 is the number of bytes to read!
+```
+
+This is such a common operation, that there is a shorthand for it! `write_read/4`
+
+```elixir
+Circuits.I2C.write_read(i2c, device_address, <<register_address>>, 2)
+```
+
+## Side note - Binary Pattern Matching
+
+Peter Ullrich has a great article on Elixir's binary pattern matching syntax, [here](https://peterullrich.com/binary-pattern-matching-in-elixir)
+
+```elixir
+<<first_byte, second_byte>> = <<0x01, 0x02>>
+{first_byte, second_byte}
+```
+
+```elixir
+rand_data = :crypto.strong_rand_bytes(4)
+```
+
+```elixir
+<<i1::integer-16, i2::integer-16>> = rand_data
+{i1, i2}
+```
+
+```elixir
+<<w1::integer-32>> = rand_data
+w1
+```
+
+```elixir
+<<w2::integer-32-little>> = rand_data
+w2
+```
+
+```elixir
+<<f::float-32>> = rand_data
+f
+```
+
+```elixir
+<<b7::1, b56::2, b01234::5>> = <<0b10100001>>
+
+{b7, b56, b01234}
+```
