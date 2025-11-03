@@ -26,7 +26,15 @@ converter, please come see me.
 
 ## Details
 
-The rest of this document will be filled out after the event!
+You can experiment with the livebooks in this repo by copying them to your
+Nerves Livebook device via the following command:
+
+```
+scp *.livemd nerves.local:/data/livebook
+```
+
+This will ask you to enter the ssh passphrase, which defaults to `nerves` in the
+Nerves Livebook image.
 
 ## Resources
 
